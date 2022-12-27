@@ -1,0 +1,45 @@
+# Deployment for result-server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+     name: result-server-deploy
+     labels:
+       name: result-server-pod
+       app: search-result-server
+spec:
+   replicas: 3
+   selector:
+      matchLabels:
+        name: result-server-pod
+        app: search-result-server
+   template:
+        metadata:
+          name: result-server-pod
+          labels:
+             name: result-server-pod
+             app: search-result-server
+        spec:
+          containers:
+           - name:  resultserver
+             image: awsburhan/resultserv:v1.0
+             env:
+             - name: MYSQL_PASSWORD
+               valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user-password
+             - name: MYSQL_USER
+               valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+             - name: MYSQL_ROOT_PASSWORD
+               valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+             envFrom:
+             - configMapRef:
+                name: server-config  
+             ports:
+              - containerPort: 80

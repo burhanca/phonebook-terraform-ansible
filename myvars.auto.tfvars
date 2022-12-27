@@ -1,0 +1,9 @@
+# aws_access_key = ""
+# aws_secret_key = ""
+# myami = "ami-05fa00d4c63e32376"
+mykey = "firstkeyb"
+tags = ["control_node"]
+instancetype = "t2.micro"
+num = 1
+region = "us-east-1"
+secgr-dynamic-ports= [22, 80]

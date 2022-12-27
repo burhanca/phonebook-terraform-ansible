@@ -1,0 +1,82 @@
+- name: Managed Kubernetes Master Node
+  hosts: ec2-3-237-43-208.compute-1.amazonaws.com
+  become: true
+  tasks: 
+
+
+    - name: copy k8s files to kube master node
+      copy: 
+        src: /home/ec2-user/K8s/
+        dest: /home/ubuntu/K8s
+
+
+    - name: 'show all nodes'
+      register: nodes 
+      command: "kubectl get nodes --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/"
+
+    - name: 'Run secret'
+      register: secret
+      command: "kubectl apply -f . --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/K8s/secret/"
+  
+        
+
+    - name: 'Run configMap'
+      register: configMap
+      command: "kubectl apply -f . --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/K8s/configMap/"
+
+
+    - name: 'Run db'
+      register: db
+      command: "kubectl apply -f . --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/K8s/db/"  
+
+    - name: 'Run web_server'
+      register: web
+      command: "kubectl apply -f . --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/K8s/web_server/" 
+
+    
+    - name: 'Run result_server'
+      register: result
+      command: "kubectl apply -f . --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/K8s/result_server/" 
+
+    
+    - name: 'show all pods, deployment'
+      register: pods
+      command: "kubectl apply -f . --kubeconfig=/home/ubuntu/.kube/config"
+      args:
+         chdir: "/home/ubuntu/K8s/result_server/" 
+
+
+    - debug:
+        var: nodes.stdout_lines
+    
+    - debug:
+        var: secret.stdout_lines
+
+
+    - debug:
+        var: configMap.stdout_lines
+
+    - debug:
+        var: db.stdout_lines
+    
+    - debug:
+        var: web.stdout_lines
+    
+    - debug:
+        var: result.stdout_lines
+
+    - debug:
+        var: pods.stdout_lines
+

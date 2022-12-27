@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-config
+data:
+  MYSQL_DATABASE_HOST: mysql-svc.default.svc.cluster.local     
+  MYSQL_DATABASE: phonebook

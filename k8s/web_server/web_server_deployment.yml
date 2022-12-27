@@ -1,0 +1,45 @@
+# Deployment for web-server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+     name: web-server-deploy
+     labels:
+       name: web-server-pod
+       app: crud-web-server
+spec:
+   replicas: 3
+   selector:
+      matchLabels:
+        name: web-server-pod
+        app: crud-web-server
+   template:
+        metadata:
+          name: web-server-pod
+          labels:
+             name: web-server-pod
+             app: crud-web-server
+        spec:
+          containers:
+           - name:  webserver
+             image: awsburhan/webserv:v1.0
+             env:
+             - name: MYSQL_PASSWORD
+               valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user-password
+             - name: MYSQL_USER
+               valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+             - name: MYSQL_ROOT_PASSWORD
+               valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-root-password
+             envFrom:
+             - configMapRef:
+                name: server-config
+             ports:
+              - containerPort: 80

@@ -1,0 +1,17 @@
+# SERVICE for WEB-SERVER
+apiVersion: v1
+kind: Service
+metadata:
+      name: web-server-svc
+      labels:
+        name: web-server-pod
+        app: crud-web-server
+spec:
+    type: NodePort
+    ports:
+    - port: 80
+      targetPort: 80 # container port
+      nodePort: 30001
+    selector:
+       name: web-server-pod
+       app:  crud-web-server

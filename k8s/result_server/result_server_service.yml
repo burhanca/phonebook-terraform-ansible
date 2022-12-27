@@ -1,0 +1,17 @@
+# SERVICE for RESULT-SERVER
+apiVersion: v1
+kind: Service
+metadata:
+      name: result-server-svc
+      labels:
+        name: result-server-pod
+        app: search-result-server
+spec:
+    type: NodePort
+    ports:
+    - port: 80
+      targetPort: 80 # container port
+      nodePort: 30002
+    selector:
+       name: result-server-pod
+       app:  search-result-server
